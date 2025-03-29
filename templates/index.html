@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Stream Video</title>
+</head>
+<body>
+    <h1>Live Camera Feed</h1>
+    
+    <!-- Start and Stop buttons for camera stream -->
+    <button onclick="startStream()">Start Stream</button>
+    <button onclick="stopStream()">Stop Stream</button>
+
+    <h2>Live Video Feed:</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="imageUpload" name="file" accept="image/*" required />
+        <button type="submit">Upload</button>
+    </form>
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById("uploadForm").onsubmit = async function (e) {
+            e.preventDefault();
+            let formData = new FormData();
+            formData.append("file", document.getElementById("imageUpload").files[0]);
+    
+            let response = await fetch("/upload", {
+                method: "POST",
+                body: formData,
+            });
+    
+            let result = await response.json();
+            document.getElementById("result").innerText = JSON.stringify(result, null, 2);
+        };
+    </script>
+    
+</body>
+</html>
